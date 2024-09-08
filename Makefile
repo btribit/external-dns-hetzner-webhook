@@ -74,6 +74,11 @@ docker-build: build ## Build the docker image
 docker-push: ## Push the docker image
 	docker push $(IMAGE)
 
+.PHONY: docker-multiarch-build-and-push
+docker-multiarch-build-and-push: ## Build and push multi-architecture docker image
+	docker buildx inspect --bootstrap
+	docker buildx build --platform linux/amd64,linux/arm64 -t $(IMAGE) --push .
+
 ##@ Test
 
 .PHONY: unit-test
